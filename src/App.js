@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import BreweryList from "./views/brewery/List";
 import BreweryDetail from "./views/brewery/Detail";
-import "./App.css";
 
 function App() {
   return (
