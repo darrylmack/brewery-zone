@@ -20,60 +20,66 @@ export default function BreweryList() {
   }, [currentIndex]);
 
   const incrementPage = () => {
-    let currentPage = currentIndex;
-    currentPage = currentPage + 1;
-    setCurrentIndex(currentPage);
+    setCurrentIndex((prev) => prev + 1);
   };
 
   const decrementPage = () => {
-    let currentPage = currentIndex;
-    currentPage = currentPage - 1;
-    setCurrentIndex(currentPage);
+    setCurrentIndex((prev) => Math.max(prev - 1, 1));
   };
 
   const renderBreweries = () => {
-    const breweryList = breweries.map((brewery) => {
-      const { id, name, city, state, website_url } = brewery;
+    return breweries.map((brewery) => {
+      const { id, name, city, state } = brewery;
 
       return (
-        <li key={id} className="flex flex-col cursor-pointer pb-3">
-          <div className="border p-4">
-            <Link
-              to={`/breweries/${id}`}
-              className="font-semibold text-lg hover:text-blue-600"
-            >
-              {name}
-            </Link>
-            <p>
+        <li key={id}>
+          <Link
+            to={`/breweries/${id}`}
+            className="block bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition-shadow duration-300"
+          >
+            <h2 className="text-xl font-semibold text-amber-800 mb-2">{name}</h2>
+            <p className="text-gray-700">
               {city}, {state}
             </p>
-          </div>
+          </Link>
         </li>
       );
     });
-
-    return breweryList;
   };
 
   return (
-    <main className="container w-full mx-auto pt-12 justify-center pb-32">
-      <h1 className=" font-bold text-3xl mb-4">Brewery Catalog</h1>
-      <ul className="md:max-w-xl">{breweries && renderBreweries()}</ul>
-      <button
-        type="button"
-        className=" bg-blue-700 hover:bg-blue-600 text-white py-4 px-8 rounded-md mr-2 mt-4 disabled:bg-gray-400 disabled:cursor-default"
-        onClick={decrementPage}
-        disabled={currentIndex <= 1}
-      >
-        Prev
-      </button>
-      <button
-        type="button"
-        className=" bg-blue-700 hover:bg-blue-600 text-white py-4 px-8 rounded-md mx-2"
-        onClick={incrementPage}
-      >
-        Next
-      </button>
-    </main>
+    <div
+      className="min-h-screen bg-cover bg-center bg-no-repeat relative"
+      style={{
+        backgroundImage: `url('/brewery.webp')`,
+      }}
+    >
+      <div className="bg-gradient-to-b from-white bg-opacity-50 absolute inset-0"></div> {/* Overlay */}
+      <header className="bg-amber-800 text-white py-4 shadow-md fixed top-0 w-full z-10">
+        <h1 className="text-center text-3xl font-bold">Brewery Catalog</h1>
+      </header>
+      <main className="container mx-auto pt-24 pb-12 px-4 relative z-10">
+        <ul className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {breweries && renderBreweries()}
+        </ul>
+        <div className="flex justify-center mt-8 space-x-4">
+          <button
+            type="button"
+            className="bg-amber-700 hover:bg-amber-600 text-white py-2 px-4 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+            onClick={decrementPage}
+            disabled={currentIndex <= 1}
+          >
+            Prev
+          </button>
+          <button
+            type="button"
+            className="bg-amber-700 hover:bg-amber-600 text-white py-2 px-4 rounded"
+            onClick={incrementPage}
+          >
+            Next
+          </button>
+        </div>
+      </main>
+    </div>
   );
 }
